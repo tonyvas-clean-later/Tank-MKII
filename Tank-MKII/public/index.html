@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Tank MKII</title>
+</head>
+<body>
+    <main>
+        <div id="info_div">
+            <table>
+                <tr>
+                    <th>Left Motor Speed</th>
+                    <th>Right Motor Speed</th>
+                </tr>
+                <tr>
+                    <td id="left_speed">N/A</td>
+                    <td id="right_speed">N/A</td>
+                </tr>
+            </table>
+
+            <input type="button" value="Reset" id="reset" oninput="reset()" onclick="reset()"></input>
+
+            <table>
+                <tr>
+                    <th>Turret Azimuth</th>
+                    <th>Turret Elevation</th>
+                </tr>
+                <tr>
+                    <td id="azimuth">N/A</td>
+                    <td id="elevation">N/A</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="camera_div">
+            <img id="camera"></img>
+        </div>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="motors.js"></script>
+    <script src="turret.js"></script>
+    <script src="keyboard.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

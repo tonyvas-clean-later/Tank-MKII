@@ -1,0 +1,31 @@
+{
+    "motors": {
+        "left": {
+            "forward_pin": 21,
+            "backward_pin": 20,
+            "enable_pin": 16
+        },
+        "right": {
+            "forward_pin": 22,
+            "backward_pin": 27,
+            "enable_pin": 17
+        }
+    },
+    "turret": {
+        "azimuth": {
+            "pin": 12,
+            "angle_min": 0,
+            "angle_max": 180,
+            "inverted": true
+        },
+        "elevation": {
+            "pin": 13,
+            "angle_min": 0,
+            "angle_max": 180,
+            "inverted": false
+        },
+        "laser": {
+            "pin": 2
+        }
+    }
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Pi Tank MKII
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/bin/bash /home/pi/Tank-MKII/start.sh
+
+[Install]
+WantedBy=multi-user.target
