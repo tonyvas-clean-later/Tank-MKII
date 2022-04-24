@@ -1,11 +1,23 @@
 class Motors{
-    constructor(keyboard){
+    constructor(keyboard, config){
         this.keyboard = keyboard;
+        this.config = config;
+
         this.keyboard.addCallback(keyStates => {
             this.onUserInput(keyStates);
         });
 
         this.speeds = {left: 0, right: 0};
+        this.onSpeedChange(this.speeds);
+    }
+
+    scalePower(original){
+        let scaled = {};
+        for (let key in original){
+            scaled[key] = original[key] * this.config.power;
+        }
+
+        return scaled;
     }
 
     onUserInput(keys){
@@ -13,7 +25,7 @@ class Motors{
         let newSpeed = this.getSpeedForInput(encoded);
 
         if (!this.isSameObject(this.speeds, newSpeed)){
-            this.speeds = newSpeed;
+            this.speeds = this.scalePower(newSpeed);
             this.onSpeedChange(this.speeds);
         }
     }
@@ -25,8 +37,8 @@ class Motors{
     getSpeedForInput(encodedInput){
         const SPEEDS = {
             '0000': { left:  0,      right:   0   },    // no keys
-            '1000': { left:  0.5,    right:   0.5 },    // w
-            '0100': { left: -0.5,    right:  -0.5 },    // s
+            '1000': { left:  1,      right:   1   },    // w
+            '0100': { left: -1,      right:  -1   },    // s
             '0010': { left: -0.5,    right:   0.5 },    // a
             '0001': { left:  0.5,    right:  -0.5 },    // d
             '1010': { left:  0.5,    right:   1   },    // w a

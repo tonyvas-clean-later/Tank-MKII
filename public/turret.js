@@ -1,37 +1,38 @@
 class Turret{
-    constructor(keyboard, angleRanges){
+    constructor(keyboard, config){
         this.keyboard = keyboard;
+        this.config = config;
+
         this.keyboard.addCallback(keyStates => {
             this.onUserInput(keyStates);
         });
 
-        this.angleRanges = angleRanges;
         this.angles = {azimuth: 90, elevation: 90};
+        this.onPositionChange(this.angles);
     }
 
     onUserInput(keys){
-        const STEP = 5;
         let newAngles = {
             azimuth: this.angles.azimuth,
             elevation: this.angles.elevation
         }
 
         if (keys.ARROWLEFT){
-            newAngles.azimuth += -STEP
+            newAngles.azimuth += -this.config.sensitivity;
         }
         else if (keys.ARROWRIGHT){
-            newAngles.azimuth += STEP
+            newAngles.azimuth += this.config.sensitivity;
         }
 
         if (keys.ARROWUP){
-            newAngles.elevation += -STEP
+            newAngles.elevation += -this.config.sensitivity;
         }
         else if (keys.ARROWDOWN){
-            newAngles.elevation += STEP
+            newAngles.elevation += this.config.sensitivity;
         }
 
-        newAngles.azimuth = Math.max(Math.min(newAngles.azimuth, this.angleRanges.azimuth.max), this.angleRanges.azimuth.min);
-        newAngles.elevation = Math.max(Math.min(newAngles.elevation, this.angleRanges.elevation.max), this.angleRanges.elevation.min);
+        newAngles.azimuth = Math.max(Math.min(newAngles.azimuth, this.config.azimuth.max), this.config.azimuth.min);
+        newAngles.elevation = Math.max(Math.min(newAngles.elevation, this.config.elevation.max), this.config.elevation.min);
 
         if (!this.isSameObject(this.angles, newAngles)){
             this.angles = newAngles;
