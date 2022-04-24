@@ -12,42 +12,53 @@ function start(server){
         const turret = createTurretController(config)
 
         let clientCount = 0;
+        let lastActivity = new Date();
+
+        let idleHandler = setInterval(() => {
+            if (new Date().getTime() - lastActivity.getTime() >= config.turret.laser.timeout * 1000 || clientCount <= 0){
+                if (turret.currentLaserState){
+                    turret.targetLaserState = false;
+                }
+            }
+            else{
+                if (!turret.currentLaserState){
+                    turret.targetLaserState = true;
+                }
+            }
+        }, 100);
 
         io.on('connection', (socket) => {
-            socket.emit('config', getClientConfig(config))
-
             clientCount++;
-            if (clientCount == 1){
-                turret.targetLaserState = true;
-            }
+            socket.emit('config', getClientConfig(config))
 
             socket.on('disconnect', () => {
                 clientCount--;
-                if (clientCount <= 0){
-                    turret.targetLaserState = false;
-                }
             })
     
             socket.on('turret', data => {
                 let {azimuth, elevation} = data;
                 azimuth = Math.max(Math.min(azimuth, config.turret.azimuth.angle_max), config.turret.azimuth.angle_min)
                 elevation = Math.max(Math.min(elevation, config.turret.elevation.angle_max), config.turret.elevation.angle_min)
-
+                
                 if (config.turret.azimuth.inverted){
                     azimuth = 180 - azimuth;
                 }
                 if (config.turret.elevation.inverted){
                     elevation = 180 - elevation;
                 }
-
+                
                 turret.targetAzimuth = azimuth;
                 turret.targetElevation = elevation;
+
+                lastActivity = new Date();
             })
 
             socket.on('motors', data => {
                 let {left, right} = data;
                 motors.targetLeft = left;
                 motors.targetRight = right;
+
+                lastActivity = new Date();
             });
         });
 
@@ -93,7 +104,7 @@ function createTurretController(config){
         laser: config.turret.laser.pin,
     };
 
-    let controller = new TurretController(90, 90, true, pins);
+    let controller = new TurretController(90, 90, false, pins);
 
     controller.onStdout = (name, data) => {
         console.log(`Turret subprocess ${name} | stdout | ${data}`);

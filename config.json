@@ -25,7 +25,8 @@
             "inverted": false
         },
         "laser": {
-            "pin": 2
+            "pin": 2,
+            "timeout": 300
         }
     }
 }
