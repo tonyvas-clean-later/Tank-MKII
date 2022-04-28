@@ -14,14 +14,14 @@
     "turret": {
         "azimuth": {
             "pin": 12,
-            "angle_min": 0,
-            "angle_max": 180,
+            "angle_min": 20,
+            "angle_max": 160,
             "inverted": true
         },
         "elevation": {
             "pin": 13,
-            "angle_min": 0,
-            "angle_max": 180,
+            "angle_min": 40,
+            "angle_max": 140,
             "inverted": false
         },
         "laser": {

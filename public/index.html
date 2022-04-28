@@ -30,19 +30,11 @@
             <table>
                 <tr>
                     <th>Motors Power</th>
-                    <th>Turret Sensitivity</th>
+                    <th>Turret Tracking</th>
                 </tr>
                 <tr>
-                    <td id="motors_power">
-                        <button id="motors_power_minus">-</button>
-                        <span id="motors_power_span"></span>
-                        <button id="motors_power_plus">+</button>
-                    </td>
-                    <td id="turret_sens">
-                        <button id="turret_sens_minus">-</button>
-                        <span id="turret_sens_span"></span>
-                        <button id="turret_sens_plus">+</button>
-                    </td>
+                    <td id="motors_power"></td>
+                    <td id="turret_tracking"></td>
                 </tr>
             </table>
         </div>
@@ -55,6 +47,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="motors.js"></script>
     <script src="turret.js"></script>
+    <script src="mouse.js"></script>
     <script src="keyboard.js"></script>
     <script src="main.js"></script>
 </body>

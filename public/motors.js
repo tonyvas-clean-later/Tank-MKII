@@ -1,32 +1,52 @@
 class Motors{
-    constructor(keyboard, config){
+    constructor(keyboard, mouse, config){
         this.keyboard = keyboard;
+        this.mouse = mouse;
         this.config = config;
 
         this.keyboard.addCallback(keyStates => {
-            this.onUserInput(keyStates);
+            this.onKeyboardInput(keyStates);
         });
 
         this.speeds = {left: 0, right: 0};
-        this.onSpeedChange(this.speeds);
+        this.power = 0.5;
+
+        setTimeout(() => {
+            this.onUpdate();
+        }, 0);
     }
 
     scalePower(original){
         let scaled = {};
         for (let key in original){
-            scaled[key] = original[key] * this.config.power;
+            scaled[key] = original[key] * this.power;
         }
 
         return scaled;
     }
 
-    onUserInput(keys){
-        let encoded = this.encodeKeys(keys);
-        let newSpeed = this.getSpeedForInput(encoded);
+    onKeyboardInput(keys){
+        if (keys.ARROWUP || keys.ARROWDOWN){
+            if (keys.ARROWUP){
+                this.power += 0.1
+            }
+            
+            if (keys.ARROWDOWN){
+                this.power += -0.1
+            }
 
-        if (!this.isSameObject(this.speeds, newSpeed)){
-            this.speeds = this.scalePower(newSpeed);
-            this.onSpeedChange(this.speeds);
+            this.power = Math.round(Math.max(Math.min(this.power, 1), 0.1) * 10) / 10;
+
+            this.onUpdate();
+        }
+        else{
+            let encoded = this.encodeKeys(keys);
+            let newSpeed = this.getSpeedForInput(encoded);
+
+            if (!this.isSameObject(this.speeds, newSpeed)){
+                this.speeds = this.scalePower(newSpeed);
+                this.onUpdate();
+            }
         }
     }
 
@@ -66,83 +86,5 @@ class Motors{
         return encoded;
     }
 
-    onSpeedChange(speeds){}
+    onUpdate(){}
 }
-
-// const keysDown = {up: false, down: false, left: false, right: false};
-
-// let lastCode = null;
-// let lastSpeedMult = null;
-
-// let speedMult = 1;
-
-// function sendSpeeds(){
-//     let code = '';
-//     for (const dir of ['up', 'down', 'left', 'right']){
-//         if (keysDown[dir]) code += '1';
-//         else code += '0';
-//     }
-
-//     if (code == lastCode && speedMult == lastSpeedMult) return;
-    
-//     lastCode = code;
-//     lastSpeedMult = speedMult;
-
-//     let speeds = SPEEDS[code];
-//     if (!speeds) speeds = SPEEDS.default;    
-
-    
-//     setLeft(speeds[0] * speedMult);
-//     setRight(speeds[1] * speedMult);
-// }
-
-// document.body.onkeydown = e => {
-//     switch (e.key.toLowerCase()) {
-//         case 'w':
-//             keysDown.up = true;
-//             break;
-//         case 's':
-//             keysDown.down = true;
-//             break;
-//         case 'a':
-//             keysDown.left = true;
-//             break;
-//         case 'd':
-//             keysDown.right = true;
-//             break;
-//         case 'arrowup':
-//             speedMult += 0.2;
-//             break;
-//         case 'arrowdown':
-//             speedMult -= 0.2;
-//             break;
-//         default:
-//             return;
-//     }
-
-//     if (speedMult > 1) speedMult = 1;
-//     else if (speedMult < 0.2) speedMult = 0.2;
-
-//     sendSpeeds();
-// }
-
-// document.body.onkeyup = e => {
-//     switch (e.key.toLowerCase()) {
-//         case 'w':
-//             keysDown.up = false;
-//             break;
-//         case 's':
-//             keysDown.down = false;
-//             break;
-//         case 'a':
-//             keysDown.left = false;
-//             break;
-//         case 'd':
-//             keysDown.right = false;
-//             break;
-//         default:
-//             return;
-//     }
-
-//     sendSpeeds()
-// }
