@@ -23,9 +23,9 @@ class Turret{
 
     onKeyboardInput(keyStates){
         let update = false;
-        
-        if (this.tracking != keyStates[' ']){
-            this.tracking = keyStates[' '];
+
+        if (keyStates[' ']){
+            this.tracking = !this.tracking
             update = true;
         }
 
