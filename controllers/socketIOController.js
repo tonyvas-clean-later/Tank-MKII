@@ -22,38 +22,61 @@ function start(server){
 
         io.on('connection', (socket) => {
             clientCount++;
-            socket.emit('config', getClientConfig(config))
+
+            socket.on('auth', auth => {
+                if (auth == process.env.AUTHENTICATION_CODE){
+                    socket.emit('config', getClientConfig(config))
+                    socket.authed = true;
+                }
+                else{
+                    socket.emit('autherror');
+                }
+            })
 
             socket.on('disconnect', () => {
                 clientCount--;
             })
     
             socket.on('angles', ({azimuth, elevation}) => {
-                azimuth = Math.max(Math.min(azimuth, config.azimuth.angle_max), config.azimuth.angle_min)
-                elevation = Math.max(Math.min(elevation, config.elevation.angle_max), config.elevation.angle_min)
-                
-                if (config.azimuth.inverted){
-                    azimuth = 180 - azimuth;
-                }
-                if (config.elevation.inverted){
-                    elevation = 180 - elevation;
-                }
-                
-                turret.targetAzimuth = azimuth;
-                turret.targetElevation = elevation;
+                if (socket.authed){
+                    azimuth = Math.max(Math.min(azimuth, config.azimuth.angle_max), config.azimuth.angle_min)
+                    elevation = Math.max(Math.min(elevation, config.elevation.angle_max), config.elevation.angle_min)
+                    
+                    if (config.azimuth.inverted){
+                        azimuth = 180 - azimuth;
+                    }
+                    if (config.elevation.inverted){
+                        elevation = 180 - elevation;
+                    }
+                    
+                    turret.targetAzimuth = azimuth;
+                    turret.targetElevation = elevation;
 
-                lastActivity = new Date();
+                    lastActivity = new Date();
+                }
+                else{
+                    socket.emit('autherror');
+                }
             })
 
             socket.on('laser_state', state => {
-                turret.targetLaserState = state;
-                lastActivity = new Date();
+                if (socket.authed){
+                    turret.targetLaserState = state;
+                    lastActivity = new Date();
+                }
+                else{
+                    socket.emit('autherror');
+                }
             })
         });
 
         setInterval(() => {
             fetchCameraSnapshot().then(data => {
-                io.emit('camera', data);
+                for (let [id, socket] of io.sockets.sockets){
+                    if (socket.authed){
+                        socket.emit('camera', data);
+                    }
+                }
             }).catch(err => {
                 console.error(err);
             })

@@ -7,6 +7,7 @@ function setEnv(){
     process.env.PORT = process.env.PORT || 9000;
     process.env.PUBLIC_PATH = `${__dirname}/public`;
     process.env.CONFIG_FILE = `${__dirname}/config.json`
+    process.env.AUTHENTICATION_CODE = 'potato'
     process.env.CAMERA_URL = `http://127.0.0.1:8080?action=snapshot`
     process.env.MJPG_STREAMER_PATH = `${__dirname}/mjpg-streamer`
     process.env.SERVO_SCRIPT = `${__dirname}/python/servo.py`;

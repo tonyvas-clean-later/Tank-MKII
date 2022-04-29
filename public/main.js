@@ -40,6 +40,10 @@ function setupTurret(config, keyboard, mouse){
     }
 }
 
+document.body.onload = () => {
+    socket.emit('auth', window.prompt('Enter authentication code!'))
+}
+
 socket.on('config', (config) => {
     let keyboard = new Keyboard(document.body);
     let mouse = new Mouse(document.getElementById('camera'));
@@ -52,4 +56,8 @@ socket.on('camera', arrayBuffer => {
     document.getElementById('camera').src = URL.createObjectURL(
         new Blob([buffer.buffer], {type: 'image/jpg'})
     )
+})
+
+socket.on('autherror', () => {
+    alert('Authentication error!');
 })
