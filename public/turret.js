@@ -30,8 +30,8 @@ class Turret{
             update = true;
         }
 
-        if (this.laserState != keyStates['SHIFT']){
-            this.laserState = keyStates['SHIFT'];
+        if (keyStates['SHIFT']){
+            this.laserState = !this.laserState
             update = true;
         }
 
