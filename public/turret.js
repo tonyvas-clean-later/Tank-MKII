@@ -14,6 +14,7 @@ class Turret{
 
         this.angles = {azimuth: 90, elevation: 90};
         this.tracking = false;
+        this.laserState = false;
 
         setTimeout(() => {
             this.onUpdate();
@@ -21,8 +22,20 @@ class Turret{
     }
 
     onKeyboardInput(keyStates){
+        console.log(keyStates);
+        let update = false;
+        
         if (this.tracking != keyStates[' ']){
             this.tracking = keyStates[' '];
+            update = true;
+        }
+
+        if (this.laserState != keyStates['SHIFT']){
+            this.laserState = keyStates['SHIFT'];
+            update = true;
+        }
+
+        if (update){
             this.onUpdate();
         }
     }

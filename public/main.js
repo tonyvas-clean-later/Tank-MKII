@@ -1,50 +1,42 @@
 const socket = io();
-let motors, turret;
+let turret;
 
 function reset(){
     window.location = window.location
 }
 
-function getMotorsConfig(config){
-    return {};
-}
-
-function getTurretConfig(config){
-    let turretConfig = {
-        azimuth: {
-            min: config.turret.azimuth.min,
-            max: config.turret.azimuth.max,
-        },
-        elevation: {
-            min: config.turret.elevation.min,
-            max: config.turret.elevation.max,
-        }
-    };
-
-    return turretConfig
-}
-
-function setupMotors(config, keyboard, mouse){
-    motors = new Motors(keyboard, mouse, getMotorsConfig(config));
-
-    motors.onUpdate = () => {
-        socket.emit('motors', motors.speeds)
-        
-        document.getElementById('left_speed').innerHTML = motors.speeds.left;
-        document.getElementById('right_speed').innerHTML = motors.speeds.right;
-        document.getElementById('motors_power').innerHTML = `${motors.power * 100}%`;
-    }
-}
-
 function setupTurret(config, keyboard, mouse){
-    turret = new Turret(keyboard, mouse, getTurretConfig(config));
+    turret = new Turret(keyboard, mouse, config);
 
     turret.onUpdate = () => {
-        socket.emit('turret', turret.angles)
+        socket.emit('angles', turret.angles);
+        socket.emit('laser_state', turret.laserState);
         
-        document.getElementById('azimuth').innerHTML = turret.angles.azimuth;
-        document.getElementById('elevation').innerHTML = turret.angles.elevation;
-        document.getElementById('turret_tracking').innerHTML = turret.tracking ? 'Yes' : 'No'
+        let azimuthElement = document.getElementById('azimuth')
+        let elevationElement = document.getElementById('elevation')
+        let trackingElement = document.getElementById('tracking');
+        let laserStateElement = document.getElementById('laser_state')
+
+        azimuthElement.innerHTML = turret.angles.azimuth;
+        elevationElement.innerHTML = turret.angles.elevation;
+
+        if (turret.tracking){
+            trackingElement.innerHTML = 'Yes'
+            trackingElement.style.color = 'lime'
+        }
+        else{
+            trackingElement.innerHTML = 'No'
+            trackingElement.style.color = 'red'
+        }
+
+        if (turret.laserState){
+            laserStateElement.innerHTML = 'On'
+            laserStateElement.style.color = 'lime'
+        }
+        else{
+            laserStateElement.innerHTML = 'Off'
+            laserStateElement.style.color = 'red'
+        }
     }
 }
 
@@ -52,7 +44,6 @@ socket.on('config', (config) => {
     let keyboard = new Keyboard(document.body);
     let mouse = new Mouse(document.getElementById('camera'));
 
-    setupMotors(config, keyboard, mouse)
     setupTurret(config, keyboard, mouse)
 })
 

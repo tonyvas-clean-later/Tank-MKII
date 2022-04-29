@@ -9,7 +9,6 @@ function setEnv(){
     process.env.CONFIG_FILE = `${__dirname}/config.json`
     process.env.CAMERA_URL = `http://127.0.0.1:8080?action=snapshot`
     process.env.MJPG_STREAMER_PATH = `${__dirname}/mjpg-streamer`
-    process.env.MOTOR_SCRIPT = `${__dirname}/python/motor.py`;
     process.env.SERVO_SCRIPT = `${__dirname}/python/servo.py`;
     process.env.LASER_SCRIPT = `${__dirname}/python/laser.py`;
 }

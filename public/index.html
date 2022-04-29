@@ -12,14 +12,10 @@
         <div id="info_div">
             <table>
                 <tr>
-                    <th>Left Motor Speed</th>
-                    <th>Right Motor Speed</th>
                     <th>Turret Azimuth</th>
                     <th>Turret Elevation</th>
                 </tr>
                 <tr>
-                    <td id="left_speed"></td>
-                    <td id="right_speed"></td>
                     <td id="azimuth"></td>
                     <td id="elevation"></td>
                 </tr>
@@ -29,12 +25,12 @@
 
             <table>
                 <tr>
-                    <th>Motors Power</th>
                     <th>Turret Tracking</th>
+                    <th>Laser State</th>
                 </tr>
                 <tr>
-                    <td id="motors_power"></td>
-                    <td id="turret_tracking"></td>
+                    <td id="tracking"></td>
+                    <td id="laser_state"></td>
                 </tr>
             </table>
         </div>
@@ -45,7 +41,6 @@
     </main>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="motors.js"></script>
     <script src="turret.js"></script>
     <script src="mouse.js"></script>
     <script src="keyboard.js"></script>
