@@ -8,7 +8,7 @@ function setEnv(){
     process.env.PUBLIC_PATH = `${__dirname}/public`;
     process.env.CONFIG_FILE = `${__dirname}/config.json`
     process.env.AUTHENTICATION_CODE = 'potato'
-    process.env.CAMERA_URL = `http://127.0.0.1:8080?action=snapshot`
+    process.env.CAMERA_URL = `http://127.0.0.1:5555?action=snapshot`
     process.env.MJPG_STREAMER_PATH = `${__dirname}/mjpg-streamer`
     process.env.SERVO_SCRIPT = `${__dirname}/python/servo.py`;
     process.env.LASER_SCRIPT = `${__dirname}/python/laser.py`;
@@ -19,7 +19,7 @@ function startStreamer(){
         '-i',
         `${process.env.MJPG_STREAMER_PATH}/input_uvc.so -f 30 -r 1280x720`,
         '-o',
-        `${process.env.MJPG_STREAMER_PATH}/output_http.so -w ${process.env.MJPG_STREAMER_PATH}/www -p 8080`
+        `${process.env.MJPG_STREAMER_PATH}/output_http.so -w ${process.env.MJPG_STREAMER_PATH}/www -p 5555`
     ]
     let streamer = spawn(`${process.env.MJPG_STREAMER_PATH}/mjpg_streamer`, options);
 
