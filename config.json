@@ -3,16 +3,19 @@
         "pin": 12,
         "angle_min": 0,
         "angle_max": 180,
+        "angle_default": 90,
         "inverted": true
     },
     "elevation": {
         "pin": 13,
         "angle_min": 0,
         "angle_max": 180,
+        "angle_default": 90,
         "inverted": false
     },
     "laser": {
         "pin": 14,
+        "state_default": false,
         "timeout": 300
     }
 }

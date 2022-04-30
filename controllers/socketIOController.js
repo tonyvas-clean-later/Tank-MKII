@@ -22,6 +22,7 @@ function start(server){
 
         io.on('connection', (socket) => {
             clientCount++;
+            io.emit('socket_count', clientCount);
 
             // socket.on('auth', auth => {
             //     if (auth == process.env.AUTHENTICATION_CODE){
@@ -37,6 +38,7 @@ function start(server){
 
             socket.on('disconnect', () => {
                 clientCount--;
+                io.emit('socket_count', clientCount);
             })
     
             socket.on('angles', ({azimuth, elevation}) => {
@@ -95,7 +97,7 @@ function createTurretController(config){
         laser: config.laser.pin,
     };
 
-    let controller = new TurretController(90, 90, false, pins);
+    let controller = new TurretController(config.azimuth.angle_default, config.elevation.angle_default, config.laser.state_default, pins);
 
     controller.onStdout = (name, data) => {
         console.log(`Turret subprocess ${name} | stdout | ${data}`);
@@ -137,11 +139,13 @@ function getClientConfig(config){
     return clientConfig = {
         azimuth: {
             min: config.azimuth.angle_min,
-            max: config.azimuth.angle_max
+            max: config.azimuth.angle_max,
+            default: config.azimuth.angle_default
         },
         elevation: {
             min: config.elevation.angle_min,
-            max: config.elevation.angle_max
+            max: config.elevation.angle_max,
+            default: config.elevation.angle_default
         }
     }
 }

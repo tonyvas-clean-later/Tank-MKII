@@ -58,6 +58,10 @@ socket.on('camera', arrayBuffer => {
     )
 })
 
+socket.on('socket_count', count => {
+    document.getElementById('client_count').innerHTML = count;
+})
+
 socket.on('autherror', () => {
     alert('Authentication error!');
 })

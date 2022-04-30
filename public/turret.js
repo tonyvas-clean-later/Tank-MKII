@@ -12,7 +12,7 @@ class Turret{
             this.onMouseInput(position);
         });
 
-        this.angles = {azimuth: 90, elevation: 90};
+        this.angles = {azimuth: config.azimuth.default, elevation: config.elevation.default};
         this.tracking = false;
         this.laserState = false;
 
