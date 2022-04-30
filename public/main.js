@@ -41,7 +41,7 @@ function setupTurret(config, keyboard, mouse){
 }
 
 document.body.onload = () => {
-    socket.emit('auth', window.prompt('Enter authentication code!'))
+    // socket.emit('auth', window.prompt('Enter authentication code!'))
 }
 
 socket.on('config', (config) => {

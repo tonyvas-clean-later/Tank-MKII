@@ -23,15 +23,17 @@ function start(server){
         io.on('connection', (socket) => {
             clientCount++;
 
-            socket.on('auth', auth => {
-                if (auth == process.env.AUTHENTICATION_CODE){
-                    socket.emit('config', getClientConfig(config))
-                    socket.authed = true;
-                }
-                else{
-                    socket.emit('autherror');
-                }
-            })
+            // socket.on('auth', auth => {
+            //     if (auth == process.env.AUTHENTICATION_CODE){
+            //         socket.emit('config', getClientConfig(config))
+            //         socket.authed = true;
+            //     }
+            //     else{
+            //         socket.emit('autherror');
+            //     }
+            // })
+            socket.emit('config', getClientConfig(config))
+            socket.authed = true;
 
             socket.on('disconnect', () => {
                 clientCount--;
