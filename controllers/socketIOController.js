@@ -14,9 +14,9 @@ function start(server){
 
         let idleHandler = setInterval(() => {
             if (new Date().getTime() - lastActivity.getTime() >= config.laser.timeout * 1000 || clientCount <= 0){
-                if (turret.currentLaserState){
-                    turret.targetLaserState = false;
-                }
+                turret.targetAzimuth = config.azimuth.angle_default;
+                turret.targetElevation = config.elevation.angle_default;
+                turret.targetLaserState = config.laser.state_default;
             }
         }, 100);
 
